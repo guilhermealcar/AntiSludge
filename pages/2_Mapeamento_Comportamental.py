@@ -4,6 +4,10 @@ import base64
 import streamlit.components.v1 as components
 import datetime
 from io import StringIO
+from utils.auth import check_login
+
+# Verifica se o usuário está logado
+check_login()
 
 st.set_page_config(layout="centered")
 
