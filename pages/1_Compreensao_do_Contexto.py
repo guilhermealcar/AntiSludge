@@ -5,8 +5,7 @@ from utils.auth import check_login
 check_login()
 
 st.set_page_config(layout="centered")
-
-
+st.image("cinco_logo.png")
 left, mid, right = st.columns([1, 10, 1])
 with mid:
     st.markdown("<h2 align='center'> Compreensão do Contexto </h2>", unsafe_allow_html=True)

@@ -25,5 +25,7 @@ if not st.session_state.logged_in:
 
 # --- Se já estiver logado ---
 else:
+    st.image("cinco_logo.png")
+
     st.sidebar.success("✅ Você está logado! Use o menu lateral para navegar.")
     st.write("👈 Selecione uma página no menu lateral.")

@@ -70,6 +70,7 @@ categoria_tipo_map = {
 # ========================
 # Layout
 # ========================
+st.image("cinco_logo.png")
 left, mid, right = st.columns([1, 10, 1])
 with mid:
     st.markdown("<h2 align='center'> 🗺️ Mapeamento Comportamental </h2>", unsafe_allow_html=True)
