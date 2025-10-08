@@ -72,7 +72,7 @@ categoria_tipo_map = {
 # ========================
 left, mid, right = st.columns([1, 10, 1])
 with mid:
-    st.markdown("# 🗺️ Mapeamento Comportamental")
+    st.markdown("<h2 align='center'> 🗺️ Mapeamento Comportamental </h2>", unsafe_allow_html=True)
     st.markdown("----")
     b1 = st.button("Informações Gerais", use_container_width=True)
     b2 = st.button("Jornada Planejada", use_container_width=True)

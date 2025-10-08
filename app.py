@@ -8,7 +8,9 @@ if "logged_in" not in st.session_state:
 
 # --- Página de Login ---
 if not st.session_state.logged_in:
-    st.title("🔐 Login de Acesso")
+    st.image("cinco_logo.png")
+
+    st.markdown("<h2 align='center'> 🔐 Login </h2>", unsafe_allow_html=True)
 
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
@@ -24,5 +26,4 @@ if not st.session_state.logged_in:
 # --- Se já estiver logado ---
 else:
     st.sidebar.success("✅ Você está logado! Use o menu lateral para navegar.")
-    st.sidebar.info("Selecione uma página no menu lateral.")
     st.write("👈 Selecione uma página no menu lateral.")
