@@ -1,5 +1,9 @@
 import streamlit as st
 import pandas as pd
+import base64
+import streamlit.components.v1 as components
+import datetime
+from io import StringIO
 
 st.set_page_config(layout="centered")
 
@@ -174,8 +178,50 @@ if st.session_state.get("section") == "jornada_planejada":
     if st.button("➕ Adicionar Comportamento"):
         st.session_state.rows.append({"Comportamento": "", "Categoria": "Busca e Acesso", "Tipo": ""})
 
-    # Submit button
+    # ---------- Botão Salvar Jornada ----------
     if st.button("Salvar Jornada"):
         df = pd.DataFrame(st.session_state.rows)
         st.success("✅ Jornada salva com sucesso!")
+
+        # Mostrar tabela no app
         st.dataframe(df, use_container_width=True)
+
+        # Converter para CSV
+        csv_str = df.to_csv(index=False)
+        b64 = base64.b64encode(csv_str.encode()).decode()
+
+        # Nome do arquivo com timestamp (opcional)
+        filename = "jornada_planejada_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
+
+        # HTML/JS que cria um link 'data:' e dispara o click automaticamente
+        # (usamos components.html porque é mais confiável para executar JS)
+        html = f"""
+        <html>
+        <body>
+            <a id="dl" href="data:text/csv;base64,{b64}" download="{filename}"></a>
+            <script>
+            // Tenta disparar o download imediatamente.
+            const a = document.getElementById('dl');
+            if (a) {{
+                // Em alguns browsers a execução imediata funciona; caso contrário,
+                // o fallback (download_button) ficará visível abaixo para o usuário clicar.
+                a.click();
+            }}
+            </script>
+        </body>
+        </html>
+        """
+
+        # Injetar o HTML (altura pequena para não ocupar muito espaço)
+        components.html(html, height=50)
+
+        # Fallback: se o navegador bloquear o download automático,
+        # mostramos um botão visível para que o usuário baixe manualmente.
+        st.markdown("---")
+        st.info("Se o download não iniciar automaticamente, use o botão abaixo.")
+        st.download_button(
+            label="⬇️ Baixar Jornada (CSV)",
+            data=csv_str,
+            file_name=filename,
+            mime="text/csv",
+        )
