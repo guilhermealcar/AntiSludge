@@ -77,14 +77,11 @@ with mid:
     st.markdown("----")
     b1 = st.button("Informações Gerais", use_container_width=True)
     b2 = st.button("Jornada Planejada", use_container_width=True)
-    b3 = st.button("Jornada Padrão", use_container_width=True)
 
 if b1:
     st.session_state["section"] = "info_gerais"
 elif b2:
     st.session_state["section"] = "jornada_planejada"
-elif b3:
-    st.session_state["section"] = "jornada_padrao"
 
 # ========================
 # Informações gerais
