@@ -3,6 +3,7 @@ import pandas as pd
 import base64
 import streamlit.components.v1 as components
 import datetime
+import os
 from io import StringIO
 from utils.auth import check_login
 
@@ -193,7 +194,17 @@ if st.session_state.get("section") == "jornada_planejada":
         b64 = base64.b64encode(csv_str.encode()).decode()
 
         # Nome do arquivo com timestamp (opcional)
-        filename = "jornada_planejada_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
+        filename = "jornada_planejada_salva" + ".csv"
+
+        # Salvamento automatico no local para utilizar nos outros scripts do app
+        save_folder = "jornadas_salvas"
+        os.makedirs(save_folder, exist_ok=True)
+
+        local_path = os.path.join(save_folder, filename)
+        with open(local_path, "w", encoding="utf-8") as f:
+            f.write(csv_str)
+
+        st.success(f"Agora, outras páginas podem acessar esses dados em: `{local_path}`")
 
         # HTML/JS que cria um link 'data:' e dispara o click automaticamente
         # (usamos components.html porque é mais confiável para executar JS)
