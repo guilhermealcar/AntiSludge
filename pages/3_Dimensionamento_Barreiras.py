@@ -16,14 +16,14 @@ st.markdown("---")
 
 # ========== Load Data ==========
 journey_path = "jornadas_salvas/jornada_planejada_salva.csv"
-conceitos_path = "utils/conceitos_e_escalas.csv"
+conceitos_path = "utils/conceitos_e_escalas_barreiras.csv"
 
 if not os.path.exists(journey_path):
     st.error("⚠️ Nenhuma jornada foi encontrada. Volte à página **Mapeamento Comportamental** e salve sua jornada primeiro.")
     st.stop()
 
 if not os.path.exists(conceitos_path):
-    st.error("⚠️ O arquivo `conceitos_e_escalas.csv` não foi encontrado em `utils/`.")
+    st.error("⚠️ O arquivo `conceitos_e_escalas_barreiras.csv` não foi encontrado em `utils/`.")
     st.stop()
 
 df_jornada = pd.read_csv(journey_path)
@@ -94,7 +94,7 @@ if st.button("💾 Salvar Respostas"):
     df_respostas = pd.DataFrame(responses)
     os.makedirs("barreiras_salvas", exist_ok=True)
 
-    filename = f"barreiras_salvas/barreiras_respostas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    filename = f"barreiras_salvas/barreiras_resposta_salva.csv"
     df_respostas.to_csv(filename, index=False, encoding="utf-8-sig")
 
     st.success(f"✅ Respostas salvas com sucesso em `{filename}`!")
