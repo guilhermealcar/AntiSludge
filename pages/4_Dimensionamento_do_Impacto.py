@@ -105,7 +105,7 @@ if st.button("💾 Salvar Respostas de Impacto"):
     df_respostas = pd.DataFrame(responses)
     os.makedirs("impactos_salvos", exist_ok=True)
 
-    filename = f"impactos_salvos/impactos_respostas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    filename = f"impactos_salvos/impactos_respostas_salvo.csv"
     df_respostas.to_csv(filename, index=False, encoding="utf-8-sig")
 
     st.success(f"✅ Respostas salvas com sucesso em `{filename}`!")
