@@ -41,7 +41,7 @@ st.dataframe(df_jornada, use_container_width=True)
 
 st.markdown("---")
 st.markdown("### ⚖️ Avaliação dos Impactos")
-st.caption("Para cada comportamento mapeado, avalie o impacto conforme os critérios abaixo (1 = sem prejuízo, 5 = com prejuízos).")
+st.caption("Para cada comportamento mapeado, clique para expandir e avaliar o impacto conforme os critérios abaixo (1 = sem prejuízo, 5 = com prejuízos).")
 
 # ========================
 # Avaliação
@@ -53,51 +53,51 @@ for idx, row in df_jornada.iterrows():
     categoria = str(row["Categoria"]).strip()
     tipo = str(row["Tipo"]).strip()
 
-    st.markdown(f"## 🧩 Comportamento {idx + 1}: {comportamento}")
-    st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
+    with st.expander(f"🧩 Comportamento {idx + 1}: {comportamento}"):
+        st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
 
-    for _, criterio in df_impactos.iterrows():
-        nome_criterio = criterio["Critério-I"]
-        conceito = criterio["Critério-I-Conceito"]
-        exemplo = criterio["Exemplo-I"]
-        descricao = criterio["Descrição-I"]
-        pergunta = criterio["Pergunta"]
-        nivel1 = criterio["1 - Sem prejuízo"]
-        nivel5 = criterio["5 - Com prejuízos"]
+        for _, criterio in df_impactos.iterrows():
+            nome_criterio = criterio["Critério-I"]
+            conceito = criterio["Critério-I-Conceito"]
+            exemplo = criterio["Exemplo-I"]
+            descricao = criterio["Descrição-I"]
+            pergunta = criterio["Pergunta"]
+            nivel1 = criterio["1 - Sem prejuízo"]
+            nivel5 = criterio["5 - Com prejuízos"]
 
-        st.markdown(f"### 🔹 {nome_criterio}")
-        with st.expander("📘 Detalhes do critério"):
-            st.write(f"**Conceito:** {conceito}")
-            st.write(f"**Exemplo:** {exemplo}")
-            st.write(f"**Descrição:** {descricao}")
+            st.markdown(f"### 🔹 {nome_criterio}")
+            with st.expander("📘 Detalhes do critério"):
+                st.write(f"**Conceito:** {conceito}")
+                st.write(f"**Exemplo:** {exemplo}")
+                st.write(f"**Descrição:** {descricao}")
 
-        st.markdown(f"**🗨️ Pergunta:** {pergunta}")
-        st.caption(f"💡 1️⃣ {nivel1}\n\n5️⃣ {nivel5}")
+            st.markdown(f"**🗨️ Pergunta:** {pergunta}")
+            st.caption(f"💡 1️⃣ {nivel1}\n\n5️⃣ {nivel5}")
 
-        resposta = st.radio(
-            f"Selecione o nível de impacto ({nome_criterio})",
-            options=[1, 2, 3, 4, 5],
-            horizontal=True,
-            key=f"{idx}_{nome_criterio}"
-        )
+            resposta = st.radio(
+                f"Selecione o nível de impacto ({nome_criterio})",
+                options=[1, 2, 3, 4, 5],
+                horizontal=True,
+                key=f"{idx}_{nome_criterio}"
+            )
 
-        responses.append({
-            "Comportamento": comportamento,
-            "Categoria": categoria,
-            "Tipo": tipo,
-            "Critério": nome_criterio,
-            "Pergunta": pergunta,
-            "Resposta": resposta,
-            "1 - Sem prejuízo": nivel1,
-            "5 - Com prejuízos": nivel5
-        })
+            responses.append({
+                "Comportamento": comportamento,
+                "Categoria": categoria,
+                "Tipo": tipo,
+                "Critério": nome_criterio,
+                "Pergunta": pergunta,
+                "Resposta": resposta,
+                "1 - Sem prejuízo": nivel1,
+                "5 - Com prejuízos": nivel5
+            })
 
-    st.markdown("---")
+st.markdown("---")
 
 # ========================
 # Save Responses
 # ========================
-if st.button("💾 Salvar Respostas de Impacto"):
+if st.button("💾 Salvar Respostas"):
     if not responses:
         st.warning("⚠️ Nenhuma resposta foi registrada.")
         st.stop()
@@ -105,7 +105,7 @@ if st.button("💾 Salvar Respostas de Impacto"):
     df_respostas = pd.DataFrame(responses)
     os.makedirs("impactos_salvos", exist_ok=True)
 
-    filename = f"impactos_salvos/impactos_respostas_salvo.csv"
+    filename = "impactos_salvos/impacto_respostas_salvo.csv"
     df_respostas.to_csv(filename, index=False, encoding="utf-8-sig")
 
     st.success(f"✅ Respostas salvas com sucesso em `{filename}`!")

@@ -35,7 +35,7 @@ st.dataframe(df_jornada, use_container_width=True)
 
 st.markdown("---")
 st.markdown("### 🧩 Avaliação das Barreiras")
-st.caption("Para cada comportamento da jornada, responda as perguntas com base nos critérios apresentados (1 = sem barreiras, 5 = barreiras impeditivas).")
+st.caption("Para cada comportamento da jornada, clique para expandir e responder as perguntas (1 = sem barreiras, 5 = barreiras impeditivas).")
 
 responses = []
 
@@ -45,45 +45,44 @@ for idx, row in df_jornada.iterrows():
     tipo = str(row["Tipo"]).strip()
     comportamento = str(row["Comportamento"]).strip()
 
-    st.markdown(f"## 🧠 Comportamento {idx + 1}: {comportamento}")
-    st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
+    with st.expander(f"🧠 Comportamento {idx + 1}: {comportamento}"):
+        st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
 
-    # Filter relevant questions
-    perguntas = df_conceitos[
-        (df_conceitos["Categoria"].str.strip() == categoria)
-        & (df_conceitos["Tipo"].str.strip() == tipo)
-    ]
+        # Filter relevant questions
+        perguntas = df_conceitos[
+            (df_conceitos["Categoria"].str.strip() == categoria)
+            & (df_conceitos["Tipo"].str.strip() == tipo)
+        ]
 
-    if perguntas.empty:
-        st.warning("Nenhuma pergunta correspondente encontrada para este comportamento.")
-        continue
+        if perguntas.empty:
+            st.warning("Nenhuma pergunta correspondente encontrada para este comportamento.")
+            continue
 
-    # For each question
-    for _, q in perguntas.iterrows():
-        st.markdown(f"**🔹 Critério-B:** {q['Critério-B']} — *{q['Critério-B-Conceito']}*")
-        st.markdown(f"**🗨️ Pergunta:** {q['Pergunta']}")
-        st.caption(f"💡 1️⃣ {q['1 - Sem barreiras']} — 5️⃣ {q['5 - Com barreiras impeditivas']}")
+        # For each question
+        for _, q in perguntas.iterrows():
+            st.markdown(f"**🔹 Critério-B:** {q['Critério-B']} — *{q['Critério-B-Conceito']}*")
+            st.markdown(f"**🗨️ Pergunta:** {q['Pergunta']}")
+            st.caption(f"💡 1️⃣ {q['1 - Sem barreiras']} — 5️⃣ {q['5 - Com barreiras impeditivas']}")
 
-        # User selects a rating (1–5)
-        resposta = st.radio(
-            f"Selecione o nível de barreira ({q['Ref #']})",
-            options=[1, 2, 3, 4, 5],
-            horizontal=True,
-            key=f"{idx}_{q['Ref #']}"
-        )
+            resposta = st.radio(
+                f"Selecione o nível de barreira ({q['Ref #']})",
+                options=[1, 2, 3, 4, 5],
+                horizontal=True,
+                key=f"{idx}_{q['Ref #']}"
+            )
 
-        responses.append({
-            "Comportamento": comportamento,
-            "Categoria": categoria,
-            "Tipo": tipo,
-            "Critério-B": q["Critério-B"],
-            "Pergunta": q["Pergunta"],
-            "Resposta": resposta,
-            "Sem Barreiras": q["1 - Sem barreiras"],
-            "Com Barreiras Impeditivas": q["5 - Com barreiras impeditivas"]
-        })
+            responses.append({
+                "Comportamento": comportamento,
+                "Categoria": categoria,
+                "Tipo": tipo,
+                "Critério-B": q["Critério-B"],
+                "Pergunta": q["Pergunta"],
+                "Resposta": resposta,
+                "Sem Barreiras": q["1 - Sem barreiras"],
+                "Com Barreiras Impeditivas": q["5 - Com barreiras impeditivas"]
+            })
 
-    st.markdown("---")
+st.markdown("---")
 
 # ========== Save Responses ==========
 if st.button("💾 Salvar Respostas"):
@@ -93,8 +92,8 @@ if st.button("💾 Salvar Respostas"):
 
     df_respostas = pd.DataFrame(responses)
     os.makedirs("barreiras_salvas", exist_ok=True)
+    filename = "barreiras_salvas/barreiras_resposta_salva.csv"
 
-    filename = f"barreiras_salvas/barreiras_resposta_salva.csv"
     df_respostas.to_csv(filename, index=False, encoding="utf-8-sig")
 
     st.success(f"✅ Respostas salvas com sucesso em `{filename}`!")
@@ -106,3 +105,4 @@ if st.button("💾 Salvar Respostas"):
         file_name=os.path.basename(filename),
         mime="text/csv",
     )
+
