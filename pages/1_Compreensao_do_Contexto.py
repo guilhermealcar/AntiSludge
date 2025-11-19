@@ -8,7 +8,7 @@ st.set_page_config(layout="centered")
 st.image("cinco_logo.png")
 left, mid, right = st.columns([1, 10, 1])
 with mid:
-    st.markdown("<h2 align='center'> Compreensão do Contexto </h2>", unsafe_allow_html=True)
+    st.markdown("<h1 align='center'> Compreensão do Contexto </h1>", unsafe_allow_html=True)
     st.markdown("----")
     b1 = st.button("Sobre sludges", use_container_width=True)
     b2 = st.button("Informações gerais", use_container_width=True)
@@ -72,7 +72,7 @@ if st.session_state.get("section") == "sobre_sludges":
 if st.session_state.get("section") == "info_gerais":
     
     st.markdown("----")
-    st.markdown("## 📋 Informações gerais")
+    st.markdown("## Informações gerais")
 
     with st.form("info_gerais_form"):
         nome = st.text_input("Qual o nome do processo ou serviço público que será analisado?")
@@ -93,7 +93,7 @@ if st.session_state.get("section") == "info_gerais":
 if st.session_state.get("section") == "info_usuarios":
     
     st.markdown("----")
-    st.markdown("## 👤 Informações sobre usuários(as)")
+    st.markdown("## Informações sobre usuários(as)")
 
     with st.form("info_usuarios_form"):
         numero_usuarios = st.number_input("Qual o número estimado de usuários beneficiados pelo processo ou serviço no horizonte temporal de um ano?", min_value=0, step=1)
@@ -117,7 +117,7 @@ if st.session_state.get("section") == "info_usuarios":
 if st.session_state.get("section") == "info_tempos":
     
     st.markdown("----")
-    st.markdown("## ⏱️ Informações sobre tempos envolvidos")
+    st.markdown("## Informações sobre tempos envolvidos")
 
     with st.form("info_tempos_form"):
         estimativa_tempo_medio = st.text_input("Informe uma estimativa do tempo médio dedicado (em dias ou horas e minutos) por uma pessoa usuária do início da interação até obter o resultado desejado com o processo ou serviço público em análise.")
@@ -133,7 +133,7 @@ if st.session_state.get("section") == "info_tempos":
 if st.session_state.get("section") == "info_indicadores":
     
     st.markdown("----")
-    st.markdown("## 📊 Informações sobre indicadores de desempenho")
+    st.markdown("## Informações sobre indicadores de desempenho")
 
     with st.form("info_indicadores_form"):
         selecao_indicadores_desempenho = st.radio("Existem indicadores de desempenho para o processo ou serviço em análise?", ("Sim", "Não"))
@@ -150,7 +150,7 @@ if st.session_state.get("section") == "info_indicadores":
 if st.session_state.get("section") == "possiveis_dificuldades":
     
     st.markdown("----")
-    st.markdown("## ⚠️ Levantamento de possíveis dificuldades comportamentais")
+    st.markdown("## Levantamento de possíveis dificuldades comportamentais")
 
     with st.form("possiveis_dificuldades_form"):
         selecao_possiveis_dificuldades = st.radio("Existem registros de reclamação e de avaliação de satisfação por parte das pessoas usuárias do processo ou serviço público?", ("Sim", "Não"))

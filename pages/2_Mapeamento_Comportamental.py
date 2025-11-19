@@ -74,7 +74,7 @@ categoria_tipo_map = {
 st.image("cinco_logo.png")
 left, mid, right = st.columns([1, 10, 1])
 with mid:
-    st.markdown("<h2 align='center'> 🗺️ Mapeamento Comportamental </h2>", unsafe_allow_html=True)
+    st.markdown("<h1 align='center'>Mapeamento Comportamental</h1>", unsafe_allow_html=True)
     st.markdown("----")
     b1 = st.button("Informações Gerais", use_container_width=True)
     b2 = st.button("Jornada Planejada", use_container_width=True)
@@ -182,7 +182,7 @@ if st.session_state.get("section") == "jornada_planejada":
         st.session_state.rows.append({"Comportamento": "", "Categoria": "Busca e Acesso", "Tipo": ""})
 
     # ---------- Botão Salvar Jornada ----------
-    if st.button("Salvar Jornada"):
+    if st.button("💾 Salvar Jornada"):
         df = pd.DataFrame(st.session_state.rows)
         st.success("✅ Jornada salva com sucesso!")
 

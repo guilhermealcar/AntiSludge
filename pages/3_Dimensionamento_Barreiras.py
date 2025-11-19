@@ -11,7 +11,7 @@ st.set_page_config(layout="centered")
 
 # ========== Header ==========
 st.image("cinco_logo.png")
-st.markdown("<h2 align='center'>🧱 Dimensionamento de Barreiras</h2>", unsafe_allow_html=True)
+st.markdown("<h1 align='center'> Dimensionamento de Barreiras </h1>", unsafe_allow_html=True)
 st.markdown("---")
 
 # ========== Load Data ==========
@@ -34,7 +34,7 @@ st.success("✅ Jornada carregada com sucesso!")
 st.dataframe(df_jornada, use_container_width=True)
 
 st.markdown("---")
-st.markdown("### 🧩 Avaliação das Barreiras")
+st.markdown("### 🔹 Avaliação das Barreiras")
 st.caption("Para cada comportamento da jornada, clique para expandir e responder as perguntas (1 = sem barreiras, 5 = barreiras impeditivas).")
 
 responses = []
@@ -45,7 +45,7 @@ for idx, row in df_jornada.iterrows():
     tipo = str(row["Tipo"]).strip()
     comportamento = str(row["Comportamento"]).strip()
 
-    with st.expander(f"🧠 Comportamento {idx + 1}: {comportamento}"):
+    with st.expander(f"Comportamento {idx + 1}: {comportamento}"):
         st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
 
         # Filter relevant questions
@@ -62,7 +62,7 @@ for idx, row in df_jornada.iterrows():
         for _, q in perguntas.iterrows():
             st.markdown(f"**🔹 Critério-B:** {q['Critério-B']} — *{q['Critério-B-Conceito']}*")
             st.markdown(f"**🗨️ Pergunta:** {q['Pergunta']}")
-            st.caption(f"💡 1️⃣ {q['1 - Sem barreiras']} — 5️⃣ {q['5 - Com barreiras impeditivas']}")
+            st.caption(f"1️⃣ {q['1 - Sem barreiras']} — 5️⃣ {q['5 - Com barreiras impeditivas']}")
 
             resposta = st.radio(
                 f"Selecione o nível de barreira ({q['Ref #']})",

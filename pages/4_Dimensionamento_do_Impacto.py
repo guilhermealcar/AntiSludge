@@ -15,7 +15,7 @@ st.set_page_config(layout="centered")
 # Header
 # ========================
 st.image("cinco_logo.png")
-st.markdown("<h2 align='center'>🎯 Dimensionamento do Impacto</h2>", unsafe_allow_html=True)
+st.markdown("<h1 align='center'> Dimensionamento do Impacto </h1>", unsafe_allow_html=True)
 st.markdown("---")
 
 # ========================
@@ -40,7 +40,7 @@ st.success("✅ Jornada carregada com sucesso!")
 st.dataframe(df_jornada, use_container_width=True)
 
 st.markdown("---")
-st.markdown("### ⚖️ Avaliação dos Impactos")
+st.markdown("### 🔹 Avaliação dos Impactos")
 st.caption("Para cada comportamento mapeado, clique para expandir e avaliar o impacto conforme os critérios abaixo (1 = sem prejuízo, 5 = com prejuízos).")
 
 # ========================
@@ -53,7 +53,7 @@ for idx, row in df_jornada.iterrows():
     categoria = str(row["Categoria"]).strip()
     tipo = str(row["Tipo"]).strip()
 
-    with st.expander(f"🧩 Comportamento {idx + 1}: {comportamento}"):
+    with st.expander(f"Comportamento {idx + 1}: {comportamento}"):
         st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
 
         for _, criterio in df_impactos.iterrows():
@@ -72,7 +72,7 @@ for idx, row in df_jornada.iterrows():
                 st.write(f"**Descrição:** {descricao}")
 
             st.markdown(f"**🗨️ Pergunta:** {pergunta}")
-            st.caption(f"💡 1️⃣ {nivel1}\n\n5️⃣ {nivel5}")
+            st.caption(f"1️⃣ {nivel1}\n\n5️⃣ {nivel5}")
 
             resposta = st.radio(
                 f"Selecione o nível de impacto ({nome_criterio})",
