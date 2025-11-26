@@ -180,6 +180,7 @@ if st.session_state.get("section") == "jornada_planejada":
     # Add button for new rows
     if st.button("➕ Adicionar Comportamento"):
         st.session_state.rows.append({"Comportamento": "", "Categoria": "Busca e Acesso", "Tipo": ""})
+        st.rerun()
 
     # ---------- Botão Salvar Jornada ----------
     if st.button("💾 Salvar Jornada"):
