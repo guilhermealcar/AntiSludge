@@ -47,7 +47,9 @@ st.markdown("---")
 # =====================================================
 st.header("🔹 Análise de Barreiras")
 
-# Médias por categoria
+# ========================
+# MÉDIA POR CATEGORIA
+# ========================
 barreiras_media_cat = df_barreiras.groupby("Categoria")["Resposta"].mean().reset_index()
 
 fig_bar_cat = px.bar(
@@ -63,7 +65,9 @@ fig_bar_cat.update_traces(texttemplate="%{text:.2f}", textposition="outside")
 fig_bar_cat.update_layout(yaxis=dict(range=[0, 5]))
 st.plotly_chart(fig_bar_cat, use_container_width=True)
 
-# Distribuição das notas
+# ========================
+# DISTRIBUIÇÃO POR CATEGORIA
+# ========================
 fig_hist_bar = px.histogram(
     df_barreiras,
     x="Resposta",
@@ -75,7 +79,6 @@ fig_hist_bar = px.histogram(
 )
 st.plotly_chart(fig_hist_bar, use_container_width=True)
 
-# Boxplot
 fig_box_bar = px.box(
     df_barreiras,
     x="Categoria",
@@ -86,12 +89,63 @@ fig_box_bar = px.box(
 )
 st.plotly_chart(fig_box_bar, use_container_width=True)
 
+st.markdown("## 🔸 Análise de Barreiras por Tipo")
+
+# ========================
+# MÉDIA POR TIPO
+# ========================
+barreiras_media_tipo = df_barreiras.groupby("Tipo")["Resposta"].mean().reset_index()
+
+fig_bar_tipo = px.bar(
+    barreiras_media_tipo,
+    x="Tipo",
+    y="Resposta",
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Média das Respostas por Tipo",
+    text="Resposta"
+)
+fig_bar_tipo.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig_bar_tipo.update_layout(yaxis=dict(range=[0, 5]))
+st.plotly_chart(fig_bar_tipo, use_container_width=True)
+
+# ========================
+# HISTOGRAMA POR TIPO
+# ========================
+fig_hist_tipo = px.histogram(
+    df_barreiras,
+    x="Resposta",
+    nbins=5,
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Distribuição das Notas das Barreiras por Tipo",
+    barmode="group"
+)
+st.plotly_chart(fig_hist_tipo, use_container_width=True)
+
+# ========================
+# BOXPLOT POR TIPO
+# ========================
+fig_box_tipo = px.box(
+    df_barreiras,
+    x="Tipo",
+    y="Resposta",
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Distribuição das Barreiras por Tipo"
+)
+st.plotly_chart(fig_box_tipo, use_container_width=True)
+
+st.markdown("---")
 
 # =====================================================
 # 🔹 ANÁLISE DE IMPACTOS
 # =====================================================
 st.header("🔹 Análise de Impactos")
 
+# ========================
+# MÉDIA IMPACTOS POR CATEGORIA
+# ========================
 impacto_media_cat = df_impacto.groupby("Categoria")["Resposta"].mean().reset_index()
 
 fig_bar_imp = px.bar(
@@ -107,6 +161,9 @@ fig_bar_imp.update_traces(texttemplate="%{text:.2f}", textposition="outside")
 fig_bar_imp.update_layout(yaxis=dict(range=[0, 5]))
 st.plotly_chart(fig_bar_imp, use_container_width=True)
 
+# ========================
+# HISTOGRAMA IMPACTOS POR CATEGORIA
+# ========================
 fig_hist_imp = px.histogram(
     df_impacto,
     x="Resposta",
@@ -118,6 +175,9 @@ fig_hist_imp = px.histogram(
 )
 st.plotly_chart(fig_hist_imp, use_container_width=True)
 
+# ========================
+# BOXPLOT IMPACTOS POR CATEGORIA
+# ========================
 fig_box_imp = px.box(
     df_impacto,
     x="Categoria",
@@ -128,6 +188,54 @@ fig_box_imp = px.box(
 )
 st.plotly_chart(fig_box_imp, use_container_width=True)
 
+st.markdown("## 🔸 Análise de Impactos por Tipo")
+
+# ========================
+# MÉDIA IMPACTOS POR TIPO
+# ========================
+impacto_media_tipo = df_impacto.groupby("Tipo")["Resposta"].mean().reset_index()
+
+fig_imp_tipo = px.bar(
+    impacto_media_tipo,
+    x="Tipo",
+    y="Resposta",
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Média dos Impactos por Tipo",
+    text="Resposta"
+)
+fig_imp_tipo.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig_imp_tipo.update_layout(yaxis=dict(range=[0, 5]))
+st.plotly_chart(fig_imp_tipo, use_container_width=True)
+
+# ========================
+# HISTOGRAMA IMPACTOS POR TIPO
+# ========================
+fig_hist_imp_tipo = px.histogram(
+    df_impacto,
+    x="Resposta",
+    nbins=5,
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Distribuição das Notas dos Impactos por Tipo",
+    barmode="group"
+)
+st.plotly_chart(fig_hist_imp_tipo, use_container_width=True)
+
+# ========================
+# BOXPLOT IMPACTOS POR TIPO
+# ========================
+fig_box_imp_tipo = px.box(
+    df_impacto,
+    x="Tipo",
+    y="Resposta",
+    color="Tipo",
+    color_discrete_sequence=CORES,
+    title="Distribuição dos Impactos por Tipo"
+)
+st.plotly_chart(fig_box_imp_tipo, use_container_width=True)
+
+st.markdown("---")
 
 # =====================================================
 # 🔹 INSIGHTS AUTOMÁTICOS
