@@ -71,15 +71,30 @@ for idx, row in df_jornada.iterrows():
                 st.write(f"**Exemplo:** {exemplo}")
                 st.write(f"**Descrição:** {descricao}")
 
+            # ========================
+            # NOVO FORMATO DE PERGUNTA (igual ao de Barreiras)
+            # ========================
             st.markdown(f"**🗨️ Pergunta:** {pergunta}")
-            st.caption(f"1️⃣ {nivel1}\n\n5️⃣ {nivel5}")
 
-            resposta = st.radio(
-                f"Selecione o nível de impacto ({nome_criterio})",
-                options=[1, 2, 3, 4, 5],
-                horizontal=True,
-                key=f"{idx}_{nome_criterio}"
-            )
+            # deixe a coluna do meio maior para evitar quebra dos botões
+            col1, col2, col3 = st.columns([3, 4, 3])
+
+            with col1:
+                # resumo do nível 1 (texto à esquerda)
+                st.markdown(f"<div style='font-size:0.88rem; line-height:1.1;'>{'1️⃣ '}{nivel1}</div>", unsafe_allow_html=True)
+
+            with col2:
+                # rótulo compacto para o radio (evita texto longo que força quebra)
+                resposta = st.radio(
+                    label="",
+                    options=[1, 2, 3, 4, 5],
+                    horizontal=True,
+                    key=f"{idx}_{nome_criterio}"
+                )
+
+            with col3:
+                # resumo do nível 5 (texto à direita)
+                st.markdown(f"<div style='font-size:0.88rem; line-height:1.1; text-align:right;'>{'5️⃣ '}{nivel5}</div>", unsafe_allow_html=True)
 
             responses.append({
                 "Comportamento": comportamento,

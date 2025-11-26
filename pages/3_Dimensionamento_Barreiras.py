@@ -39,7 +39,48 @@ st.caption("Para cada comportamento da jornada, clique para expandir e responder
 
 responses = []
 
-# ========== Loop over Jornada ==========
+# ==========================================================
+# BLOCO NOVO — estilo idêntico ao de Impactos
+# ==========================================================
+def bloco_barreira(pergunta, desc1, desc5, key):
+    st.markdown(f"### 🗨️ {pergunta}")
+
+    # colunas: esquerda / centro maior / direita
+    col1, col2, col3 = st.columns([3, 4, 3])
+
+    with col1:
+        st.markdown(
+            f"""
+            <div style='font-size: 0.88rem; line-height:1.2;'>
+            <strong>1️⃣</strong> {desc1}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col2:
+        resposta = st.radio(
+            label="",
+            options=[1, 2, 3, 4, 5],
+            horizontal=True,
+            key=key
+        )
+
+    with col3:
+        st.markdown(
+            f"""
+            <div style='font-size: 0.88rem; text-align:right; line-height:1.2;'>
+            <strong>5️⃣</strong> {desc5}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    return resposta
+
+# ========== Loop sobre Jornada ==========
 for idx, row in df_jornada.iterrows():
     categoria = str(row["Categoria"]).strip()
     tipo = str(row["Tipo"]).strip()
@@ -48,7 +89,7 @@ for idx, row in df_jornada.iterrows():
     with st.expander(f"Comportamento {idx + 1}: {comportamento}"):
         st.caption(f"**Categoria:** {categoria} | **Tipo:** {tipo}")
 
-        # Filter relevant questions
+        # filtra perguntas
         perguntas = df_conceitos[
             (df_conceitos["Categoria"].str.strip() == categoria)
             & (df_conceitos["Tipo"].str.strip() == tipo)
@@ -58,16 +99,13 @@ for idx, row in df_jornada.iterrows():
             st.warning("Nenhuma pergunta correspondente encontrada para este comportamento.")
             continue
 
-        # For each question
+        # cada pergunta
         for _, q in perguntas.iterrows():
-            st.markdown(f"**🔹 Critério-B:** {q['Critério-B']} — *{q['Critério-B-Conceito']}*")
-            st.markdown(f"**🗨️ Pergunta:** {q['Pergunta']}")
-            st.caption(f"1️⃣ {q['1 - Sem barreiras']} — 5️⃣ {q['5 - Com barreiras impeditivas']}")
 
-            resposta = st.radio(
-                f"Selecione o nível de barreira ({q['Ref #']})",
-                options=[1, 2, 3, 4, 5],
-                horizontal=True,
+            resposta = bloco_barreira(
+                pergunta=q["Pergunta"],
+                desc1=q["1 - Sem barreiras"],
+                desc5=q["5 - Com barreiras impeditivas"],
                 key=f"{idx}_{q['Ref #']}"
             )
 
@@ -105,4 +143,3 @@ if st.button("💾 Salvar Respostas"):
         file_name=os.path.basename(filename),
         mime="text/csv",
     )
-
