@@ -30,14 +30,48 @@ except FileNotFoundError:
 CORES = ["#006D77", "#83C5BE", "#FFDDD2", "#E29578", "#6D597A"]
 
 # ========================
+# DADOS COMBINADOS (BARREIRAS + IMPACTOS)
+# ========================
+
+barreiras_crit = (
+    df_barreiras
+    .groupby("Critério-B")["Resposta"]
+    .mean()
+    .reset_index()
+    .rename(columns={"Critério-B": "Critério"})
+)
+barreiras_crit["Tipo Avaliação"] = "Barreiras"
+
+impactos_crit = (
+    df_impacto
+    .groupby("Critério")["Resposta"]
+    .mean()
+    .reset_index()
+)
+impactos_crit["Tipo Avaliação"] = "Impactos"
+
+df_comparativo = pd.concat([barreiras_crit, impactos_crit], ignore_index=True)
+
+# ========================
 # Visão Geral
 # ========================
 st.subheader("🔹 Visão Geral dos Dados")
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Total de Jornadas", len(df_jornada))
-col2.metric("Total de Barreiras", len(df_barreiras))
-col3.metric("Total de Impactos", len(df_impacto))
+col1, col2, col3, col4 = st.columns(4)
+
+total_comportamentos = df_jornada["Comportamento"].nunique()
+total_perguntas_barreiras = len(df_barreiras)
+total_perguntas_impactos = len(df_impacto)
+
+# critérios únicos considerando barreiras + impactos
+criterios_barreiras = df_barreiras["Critério-B"].dropna().unique()
+criterios_impactos = df_impacto["Critério"].dropna().unique()
+total_criterios = len(set(criterios_barreiras).union(set(criterios_impactos)))
+
+col1.metric("Total de Comportamentos", total_comportamentos)
+col2.metric("Barreiras Respondidas", total_perguntas_barreiras)
+col3.metric("Impactos Respondidas", total_perguntas_impactos)
+col4.metric("Total de Critérios", total_criterios)
 
 st.markdown("---")
 
@@ -46,6 +80,36 @@ st.markdown("---")
 # 🔹 ANÁLISE DE BARREIRAS
 # =====================================================
 st.header("🔹 Análise de Barreiras")
+
+st.subheader("🔸 Barreiras por Critério")
+
+barreiras_media_criterio = (
+    df_barreiras
+    .groupby("Critério-B")["Resposta"]
+    .mean()
+    .reset_index()
+    .rename(columns={"Critério-B": "Critério"})
+    .sort_values("Resposta", ascending=False)
+)
+
+fig_bar_crit_bar = px.bar(
+    barreiras_media_criterio,
+    x="Critério",
+    y="Resposta",
+    color="Critério",
+    color_discrete_sequence=CORES,
+    title="Média das Barreiras por Critério",
+    text="Resposta"
+)
+
+fig_bar_crit_bar.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig_bar_crit_bar.update_layout(
+    yaxis=dict(range=[0, 5]),
+    xaxis_title="Critério",
+    yaxis_title="Nota Média"
+)
+
+st.plotly_chart(fig_bar_crit_bar, use_container_width=True)
 
 # ========================
 # MÉDIA POR CATEGORIA
@@ -143,6 +207,35 @@ st.markdown("---")
 # =====================================================
 st.header("🔹 Análise de Impactos")
 
+st.subheader("🔸 Impactos por Critério")
+
+impacto_media_criterio = (
+    df_impacto
+    .groupby("Critério")["Resposta"]
+    .mean()
+    .reset_index()
+    .sort_values("Resposta", ascending=False)
+)
+
+fig_bar_crit_imp = px.bar(
+    impacto_media_criterio,
+    x="Critério",
+    y="Resposta",
+    color="Critério",
+    color_discrete_sequence=CORES,
+    title="Média dos Impactos por Critério",
+    text="Resposta"
+)
+
+fig_bar_crit_imp.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig_bar_crit_imp.update_layout(
+    yaxis=dict(range=[0, 5]),
+    xaxis_title="Critério",
+    yaxis_title="Nota Média"
+)
+
+st.plotly_chart(fig_bar_crit_imp, use_container_width=True)
+
 # ========================
 # MÉDIA IMPACTOS POR CATEGORIA
 # ========================
@@ -236,6 +329,28 @@ fig_box_imp_tipo = px.box(
 st.plotly_chart(fig_box_imp_tipo, use_container_width=True)
 
 st.markdown("---")
+
+st.header("🔹 Comparação entre Barreiras e Impactos")
+
+fig_comp = px.bar(
+    df_comparativo,
+    x="Critério",
+    y="Resposta",
+    color="Tipo Avaliação",
+    barmode="group",
+    color_discrete_sequence=["#006D77", "#E29578"],
+    title="Comparação Média: Barreiras vs Impactos por Critério",
+    text="Resposta"
+)
+
+fig_comp.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+fig_comp.update_layout(
+    yaxis=dict(range=[0, 5]),
+    legend_title_text="Avaliação"
+)
+
+st.plotly_chart(fig_comp, use_container_width=True)
+
 
 # =====================================================
 # 🔹 INSIGHTS AUTOMÁTICOS
